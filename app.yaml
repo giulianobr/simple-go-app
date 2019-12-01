@@ -1,0 +1,18 @@
+runtime: go113
+
+default_expiration: 1d
+
+env_variables:
+  GIN_MODE: release
+
+instance_class: F1
+
+automatic_scaling:
+  max_instances: 1
+
+handlers:
+- url: /resources
+  static_dir: web/resources
+- url: .*
+  script: auto
+  secure: always

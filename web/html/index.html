@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index</title>
+    <script src="/resources/jquery-3.4.1.min.js"></script>
+    <script src="/resources/jquery-ui.min.js"></script>
+    <script src="/resources/gridstack.all.js"></script>
+    <link rel="stylesheet" href="/resources/gridstack.min.css" />
+    <script src="/resources/apexcharts.min.js"></script>
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .grid-stack-item-content {
+            border: 1px solid #e7e7e7;
+            border-radius: 3px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+            padding: 3px;
+        }
+
+        #canvas-holder {
+            margin: auto;
+        }
+
+        .apexcharts-canvas {
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 100%;">
+        <button onclick="createGraph('heat');this.disabled=true;">Mapa de Calor</button>
+        <button onclick="createGraph('stacked');this.disabled=true;">Totais Por Tipo</button>
+        <button onclick="createGraph('donut');this.disabled=true;">SMS Enviado</button>
+        <button onclick="createGraph('stackedH');this.disabled=true;">Chamadas Realizadas</button>
+    </div>
+
+    <div id="grid-stack" class="grid-stack" data-gs-animate="true" data-gs-column="12">
+
+    </div>
+</body>
+<script type="text/javascript">
+    $('.grid-stack').gridstack({
+        resizable: {
+            handles: 'e, se, s, sw, w'
+        }
+    });
+
+    function createGraph(id) {
+        let wrapperName = 'wrapper-' + id;
+        let wrapper = $("<div/>")
+            .attr('id', wrapperName)
+            .attr("class", "grid-stack-item")
+            .appendTo('#grid-stack');
+        let contentName = 'div-content-' + id;
+        let divcontent = $("<div/>")
+            .attr('id', contentName)
+            .attr("class", "grid-stack-item-content")
+            .appendTo("#" + wrapperName);
+        let canvasHolderName = 'canvas-holder-' + id;
+        let canvasHolder = $("<div/>")
+            .attr('id', canvasHolderName)
+            .appendTo("#" + contentName);
+        var grid = $('.grid-stack').data('gridstack');
+        let width = 4;
+        let height = 6;
+        let minWidth = 4;
+        let maxWidth = 6;
+        let minHeight = 4;
+        let maxHeight = 6;
+
+        switch (id) {
+            case "heat":
+                width = 4;
+                height = 6;
+                minWidth = 4;
+                maxWidth = 6;
+                minHeight = 4;
+                maxHeight = 6;
+                grid.addWidget(wrapper, 0, 0, width, height, true, minWidth, maxWidth, minHeight, maxHeight);
+                createHeatMap(canvasHolderName);
+                break;
+            case "stacked":
+                width = 4;
+                height = 6;
+                minWidth = 4;
+                maxWidth = 6;
+                minHeight = 4;
+                maxHeight = 6;
+                grid.addWidget(wrapper, 0, 0, width, height, true, minWidth, maxWidth, minHeight, maxHeight);
+                createStacked(canvasHolderName);
+                break;
+            case "donut":
+                width = 3;
+                height = 3;
+                minWidth = 3;
+                maxWidth = 4;
+                minHeight = 3;
+                maxHeight = 3;
+                grid.addWidget(wrapper, 0, 0, width, height, true, minWidth, maxWidth, minHeight, maxHeight);
+                createDonut(canvasHolderName);
+                break;
+            case "stackedH":
+                width = 4;
+                height = 6;
+                minWidth = 3;
+                maxWidth = 5;
+                minHeight = 4;
+                maxHeight = 6;
+                grid.addWidget(wrapper, 0, 0, width, height, true, minWidth, maxWidth, minHeight, maxHeight);
+                createStackedH(canvasHolderName);
+                break;
+            default:
+                console.log("none");
+        }
+    }
+
+    function generateData(count, yrange) {
+        var i = 0;
+        var series = [];
+        while (i < count) {
+            var x = (i + 1).toString();
+            var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+            series.push({
+                x: x,
+                y: y
+            });
+            i++;
+        }
+        return series;
+    }
+
+    function createHeatMap(canvasHolderName) {
+        let heatData = [{
+            name: 'Sem38',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem39',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem40',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem41',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem42',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem43',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem44',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem45',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem46',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem47',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        },
+        {
+            name: 'Sem48',
+            data: generateData(7, {
+                min: -30,
+                max: 55
+            })
+        }
+        ]
+
+        var optionsHeatMap = {
+            chart: {
+                height: 400,
+                type: 'heatmap',
+            },
+            plotOptions: {
+                heatmap: {
+                    shadeIntensity: 0.5,
+
+                    colorScale: {
+                        ranges: [{
+                            from: -30,
+                            to: 5,
+                            name: 'low',
+                            color: '#00A100'
+                        },
+                        {
+                            from: 6,
+                            to: 20,
+                            name: 'medium',
+                            color: '#128FD9'
+                        },
+                        {
+                            from: 21,
+                            to: 45,
+                            name: 'high',
+                            color: '#FFB200'
+                        },
+                        {
+                            from: 46,
+                            to: 55,
+                            name: 'extreme',
+                            color: '#FF0000'
+                        }
+                        ]
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: heatData,
+            title: {
+                text: 'Mapa de calor melhores conversões Ligação'
+            },
+        }
+
+        var heatMapGraph = new ApexCharts(
+            document.querySelector("#" + canvasHolderName),
+            optionsHeatMap
+        );
+
+        heatMapGraph.render();
+    }
+
+    function createStacked(canvasHolderName) {
+        var optionsStackedBar = {
+            chart: {
+                height: 400,
+                type: 'bar',
+                stacked: true,
+                toolbar: {
+                    show: false
+                }
+            },
+            responsive: [{
+                breakpoint: 480
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                },
+            },
+            series: [{
+                name: 'SMS',
+                data: [44, 55, 41, 67, 22, 43]
+            }, {
+                name: 'EMAIL',
+                data: [13, 23, 20, 8, 13, 27]
+            }, {
+                name: 'TELEFONE',
+                data: [11, 17, 15, 15, 21, 14]
+            }],
+            xaxis: {
+                categories: ['01/11', '02/11', '03/11', '04/11', '05/11', '06/11'],
+            },
+            legend: {
+                position: 'top',
+                offsetY: 0
+            },
+            fill: {
+                opacity: 1
+            },
+            title: {
+                text: 'Totais por tipo de Envio'
+            },
+        }
+
+        var stackedBarChart = new ApexCharts(
+            document.querySelector("#" + canvasHolderName),
+            optionsStackedBar
+        );
+        stackedBarChart.render();
+    }
+
+    function createDonut(canvasHolderName) {
+        var options = {
+            chart: {
+                width: 400,
+                type: 'pie',
+            },
+            labels: ['Entrega Confirmada', 'Entrega Não confirmada'],
+            series: [44, 55],
+            title: {
+                text: 'SMS Enviado'
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 400
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        }
+
+        var chart = new ApexCharts(
+            document.querySelector("#" + canvasHolderName),
+            options
+        );
+
+        chart.render();
+    }
+
+    function createStackedH(canvasHolderName) {
+        var options = {
+            chart: {
+                height: 400,
+                type: 'bar',
+                stacked: true,
+                stackType: '100%'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                },
+
+            },
+            stroke: {
+                width: 1,
+                colors: ['#fff']
+            },
+            series: [{
+                name: 'Atendidas',
+                data: [44, 55, 41, 37, 22, 43, 21]
+            }, {
+                name: 'Não atendidas',
+                data: [53, 32, 33, 52, 13, 43, 32]
+            }],
+            title: {
+                text: 'Chamadas Realizadas'
+            },
+            xaxis: {
+                categories: ["01/11", "02/11", "03/11", "04/11", "05/11", "06/11", "07/11"],
+            },
+            fill: {
+                opacity: 1
+
+            },
+
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left',
+                offsetX: 40
+            }
+        }
+
+        var chart = new ApexCharts(
+            document.querySelector("#" + canvasHolderName),
+            options
+        );
+
+        chart.render();
+    }
+</script>
+
+</html>
