@@ -10,4 +10,5 @@ A simple Go app to serve a static site
 Install and setup your Google Cloud SDK.
 
 Run:
+
     gcloud app deploy .
