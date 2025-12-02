@@ -17,3 +17,9 @@ Run:
 ```bash
     gcloud app deploy .
 ```
+
+## Build docker image
+
+```bash
+docker build -t simple-go-app .
+```
