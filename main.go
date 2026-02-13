@@ -2,21 +2,34 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"os"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 )
 
-func main() {
-	router := gin.Default()
-	router.LoadHTMLGlob("web/html/*")
-	router.Static("/resources", "./web/resources")
-	router.GET("/", index)
-	http.Handle("/", router)
-	log.Print("Go simple app up and running ...")
-	router.Run()
+func setupApp() *fiber.App {
+	// Initialize standard Go html template engine
+	engine := html.New("./web/html", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	app.Static("/resources", "./web/resources")
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("index", nil)
+	})
+
+	return app
 }
 
-func index(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", nil)
+func main() {
+	app := setupApp()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	log.Fatal(app.Listen(":" + port))
 }

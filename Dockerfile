@@ -30,7 +30,10 @@ COPY --from=builder /simple-go-app /simple-go-app
 # Copy the static web assets
 COPY --from=builder /app/web /web
 
-# Expose port 8080 (the default for Gin)
+# Set the PORT environment variable
+ENV PORT=8080
+
+# Expose port 8080
 EXPOSE 8080
 
 # Command to run the executable

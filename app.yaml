@@ -1,9 +1,8 @@
-runtime: go119
+runtime: go123
 
 default_expiration: 1d
 
 env_variables:
-  GIN_MODE: release
 
 instance_class: F1
 
